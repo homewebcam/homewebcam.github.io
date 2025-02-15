@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Camera Feed</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #000;
+      flex-direction: column;
+      color: white;
+    }
+    video {
+      border: 2px solid #fff;
+      width: 80%;
+      max-width: 600px;
+      display: none; /* Initially hide the video element */
+    }
+    .error {
+      color: red;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Live Camera Feed</h1>
+  <div class="error" id="error-message"></div>
+  <video id="video" autoplay></video>
+
+  <script>
+    const correctPassword = "canada123";
+
+    function startCamera() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+          const videoElement = document.getElementById('video');
+          videoElement.srcObject = stream;
+          videoElement.style.display = 'block';  // Show the video element
+        })
+        .catch((error) => {
+          console.error('Error accessing the camera: ', error);
+        });
+    }
+
+    function askForPassword() {
+      const password = prompt("Please enter your password:");
+
+      if (password === correctPassword) {
+        startCamera();
+      } else {
+        const errorMessage = document.getElementById('error-message');
+        errorMessage.textContent = "Incorrect password! Please try again.";
+        setTimeout(() => {
+          errorMessage.textContent = "";  // Clear the error message after a few seconds
+        }, 3000);
+        askForPassword();  // Ask for password again if incorrect
+      }
+    }
+
+    askForPassword();  // Trigger the password prompt on page load
+  </script>
+</body>
+</html>
