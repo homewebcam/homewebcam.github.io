@@ -9,37 +9,16 @@
     <h1>Live Camera Feed</h1>
     <video id="videoElement" width="640" height="480" autoplay></video>
     <script>
-        // Check if the user has already passed the password prompt
-        const passwordPassed = localStorage.getItem('passwordPassed');
-        console.log('Password Passed Check:', passwordPassed); // Debugging line
-
-        // If they haven't passed, prompt for password
-        if (!passwordPassed) {
-            const password = prompt("Enter password to access the page:");
-            console.log('Password Entered:', password); // Debugging line
-
-            if (password === 'canada123') {
-                localStorage.setItem('passwordPassed', 'true'); // Save the success flag
-                console.log('Password correct, flag set in localStorage'); // Debugging line
-            } else {
-                alert('Incorrect password');
-                window.location.href = '/host.html';  // Redirect to host page
-            }
-        }
-
-        // If password was successful, access the webcam and display it
-        if (localStorage.getItem('passwordPassed') === 'true') {
-            console.log('Password validated, accessing webcam...'); // Debugging line
-
-            navigator.mediaDevices.getUserMedia({ video: true })
-                .then(function (stream) {
-                    const videoElement = document.getElementById('videoElement');
-                    videoElement.srcObject = stream;
-                })
-                .catch(function (error) {
-                    console.log("Error accessing webcam: ", error);
-                });
-        }
+        // Access the user's webcam and display the stream
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                const videoElement = document.getElementById('videoElement');
+                videoElement.srcObject = stream;
+            })
+            .catch(function (error) {
+                console.log("Error accessing webcam: ", error);
+                alert("Could not access the webcam. Please check permissions.");
+            });
     </script>
 </body>
 </html>
