@@ -9,14 +9,22 @@
     <h1>Live Camera Feed</h1>
     <video id="videoElement" width="640" height="480" autoplay></video>
     <script>
-        // Check if the user is authorized by password
-        const password = prompt("Enter password to access the page:");
+        // Check if the user has already passed the password prompt
+        const passwordPassed = localStorage.getItem('passwordPassed');
 
-        if (password !== 'yourpassword') {
-            alert('Incorrect password');
-            window.location.href = '/host.html';  // Redirect to host page
-        } else {
-            // Access the user's webcam
+        // If they haven't passed, prompt for password
+        if (!passwordPassed) {
+            const password = prompt("Enter password to access the page:");
+            if (password === 'canada123') {
+                localStorage.setItem('passwordPassed', 'true'); // Save the success flag
+            } else {
+                alert('Incorrect password');
+                window.location.href = '/host.html';  // Redirect to host page
+            }
+        }
+
+        // If password was successful, access the webcam and display it
+        if (localStorage.getItem('passwordPassed') === 'true') {
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(function (stream) {
                     const videoElement = document.getElementById('videoElement');
